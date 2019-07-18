@@ -1,0 +1,13 @@
+sudo: required
+language: node_js
+node_js: stable
+addons:
+  chrome: stable
+script:
+    - ./node_modules/.bin/npm-install-peers
+    - yarn lint
+    - yarn test
+#   - yarn e2e
+    - yarn docs:build
+    - yarn build:prod
+    - yarn build:packagr

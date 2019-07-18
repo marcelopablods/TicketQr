@@ -1,0 +1,97 @@
+<div class="container">
+    <div class="scanner-shell" [hidden]="!hasDevices">
+
+        <header>
+            <select class="form-control" (change)="onDeviceSelectChange($event.target.value)">
+                <option value="" [selected]="!currentDevice">Seleccione su cámara...</option>
+                <option *ngFor="let device of availableDevices" [value]="device.deviceId" [selected]="currentDevice && device.deviceId === currentDevice.deviceId">{{ device.label }}</option>
+            </select>
+        </header>
+
+        <zxing-scanner #scanner start="true" [device]="currentDevice" (scanSuccess)="handleQrCodeResult($event)"></zxing-scanner>
+
+        <footer>
+            <span>Resultado:</span>
+            <span>
+                <em *ngIf="!qrResultString">Escanee código QR...</em>
+                <strong>{{qrResultString }}
+
+                    
+                </strong>
+                
+            </span>
+        </footer>
+
+    </div>
+
+    <ng-container *ngIf="hasPermission === undefined">
+
+        <h2>Esperando por permisos</h2>
+
+        <blockquote>
+            Si su dispositivo no tiene cámaras, no se le solicitarán los permisos
+        </blockquote>
+
+    </ng-container>
+
+    <ng-container *ngIf="hasPermission === false">
+
+        <h2>Se negó el permiso de la cámara 😪</h2>
+
+    </ng-container>
+
+    <ng-container *ngIf="hasDevices === undefined">
+
+        <h2>Buscando dispositivos.</h2>
+
+    </ng-container>
+
+    <ng-container *ngIf="hasDevices === null">
+
+        <h2>No se pudo verificar si hay dispositivos.</h2>
+
+        <blockquote>
+            Esto puede deberse a un error de seguridad.
+        </blockquote>
+
+    </ng-container>
+
+    <ng-container *ngIf="hasDevices === false">
+
+        <h2>No se encontraron dispositivos</h2>
+
+    </ng-container>
+
+    <hr>
+
+    <footer>
+        <!--<table>
+            <thead>
+                <tr>
+                    <th>Status</th>
+                    <th>Property</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ stateToEmoji(hasDevices) }}</td>
+                    <td>Devices</td>
+                </tr>
+                <tr>
+                    <td>{{ stateToEmoji(hasPermission) }}</td>
+                    <td>Permissions</td>
+                </tr>
+            </tbody>
+        </table><br>
+    -->
+    <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+        <div class="btn-group mr-2 text-center"  role="group">
+            <button [disabled]="!estadoAbordar" type="button" class="btn btn-outline-info" (click)="abordarPasajero()">Abordar</button>
+            
+        </div>
+        <div class="btn-group mr-2 text-center"  role="group">
+            <button type="button" class="btn btn-outline-dark">Cancelar</button>
+        </div>
+    </div>
+    </footer>
+</div>
